@@ -1,4 +1,4 @@
-package percolation;
+package myImplementations;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
@@ -34,8 +34,8 @@ public class PercolationStats {
         System.out.println("Mean = " + percolationStats.mean());
         System.out.println("Stddev = " + percolationStats.stddev());
         System.out.println(String.format("95%% confidence interval = [%f, %f]",
-                                         percolationStats.confidenceLo(),
-                                         percolationStats.confidenceHi()));
+                percolationStats.confidenceLo(),
+                percolationStats.confidenceHi()));
 
     }
 

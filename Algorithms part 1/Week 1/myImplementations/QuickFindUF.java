@@ -1,4 +1,4 @@
-package com.hyunkwak.algorithms;
+package myImplementations;
 
 public class QuickFindUF {
     private int[] nodes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -10,7 +10,9 @@ public class QuickFindUF {
             StringBuilder sb = new StringBuilder();
             int val = nodes[p];
             for (int i = 0; i < 10; i++) {
-                if (nodes[i] == val) { nodes[i] = nodes[q]; }
+                if (nodes[i] == val) {
+                    nodes[i] = nodes[q];
+                }
                 sb.append(nodes[i] + " ");
             }
             System.out.println(sb.toString());

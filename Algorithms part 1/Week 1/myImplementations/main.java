@@ -1,9 +1,4 @@
-package com.hyunkwak.algorithms;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
+package myImplementations;
 
 public class main {
 

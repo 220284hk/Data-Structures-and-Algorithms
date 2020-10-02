@@ -1,4 +1,4 @@
-package percolation;// /* *****************************************************************************
+package myImplementations;// /* *****************************************************************************
 //  *  Name:    Ada Lovelace
 //  *  NetID:   alovelace
 //  *  Precept: P00
@@ -39,7 +39,7 @@ public class Percolation {
         openSites++;
         isOpenAt[loc] = true;
 
-        boolean[] sides = new boolean[] { true, true, true, true };
+        boolean[] sides = new boolean[]{true, true, true, true};
 
         if (row == 1) {
             sides[0] = false;
