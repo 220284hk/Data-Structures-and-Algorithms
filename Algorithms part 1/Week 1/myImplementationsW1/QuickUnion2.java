@@ -1,4 +1,4 @@
-package myImplementations;
+package myImplementationsW1;
 
 import java.util.ArrayList;
 import java.util.Arrays;

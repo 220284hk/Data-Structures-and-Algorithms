@@ -1,4 +1,4 @@
-package myImplementations;
+package myImplementationsW1;
 
 @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("RC_REF_COMPARISON")
 public class BinarySearch {

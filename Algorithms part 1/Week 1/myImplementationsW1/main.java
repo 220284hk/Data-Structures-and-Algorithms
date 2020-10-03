@@ -1,4 +1,4 @@
-package myImplementations;
+package myImplementationsW1;
 
 public class main {
 
