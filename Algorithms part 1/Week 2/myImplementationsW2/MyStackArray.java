@@ -1,6 +1,9 @@
 package myImplementationsW2;
 
+import java.util.Arrays;
+
 public class MyStackArray {
+    // prevent thrashing
     private int pointer = 0;
     private int size = 1;
     private String[] stack;
@@ -10,10 +13,16 @@ public class MyStackArray {
     }
 
     public String pop() {
-        if (pointer == 0) return null;
+        if (pointer == 0) return null;          // prevents popping when there is nothing left
         String x = stack[--pointer];
-        stack[pointer] = null;
+        stack[pointer] = null;                  // prevents loitering. No more references to the string at stack[pointer]
         System.out.println("Popped " + x);
+        if (pointer <= stack.length / 4) {
+            String[] newStack = new String[stack.length / 2];
+            if (pointer + 1 >= 0) System.arraycopy(stack, 0, newStack, 0, pointer + 1);
+            stack = newStack;
+            System.out.println("This stack has been made: " + Arrays.toString(newStack));
+        }
         return x;
     }
 
@@ -37,6 +46,10 @@ public class MyStackArray {
         stack = tempStack;
         tempStack = null;
         size *= 2;
+    }
+
+    public boolean isEmpty() {
+        return pointer == 0;
     }
 
     public String toString() {
