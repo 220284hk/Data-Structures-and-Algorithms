@@ -1,7 +1,5 @@
 package myImplementationsW2;
 
-import queues.Dequev3;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -134,7 +132,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
 
-    public static <T> void print(Dequev3<T> deck) {
+    public static <T> void print(Deque<T> deck) {
         if (deck.isEmpty()) {
             System.out.println("Empty");
             return;
@@ -147,7 +145,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public static void main(String[] args) {
-//        Dequev3<Integer> deck = new Dequev3<>();
+//        Deque<Integer> deck = new Deque<>();
         test1();
         test2();
         test4();
@@ -155,7 +153,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     public static void test1() {
         System.out.println("Test 1: addFirst -> removeFirst -> addFirst -> removeLast");
-        Dequev3<Integer> deck = new Dequev3<>();
+        Deque<Integer> deck = new Deque<>();
         deck.addFirst(1);
         assert deck.size() == 1;
         assert deck.removeFirst() == 1;
@@ -167,7 +165,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     public static void test2() {
         System.out.println("Test 2: addFirst loop -> removeLast loop");
-        Dequev3<Integer> deck = new Dequev3<>();
+        Deque<Integer> deck = new Deque<>();
         for (int i = 0; i < 100; i++) {
             assert deck.size() == i;
             deck.addFirst(i);
@@ -192,7 +190,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     public static void test4() {
         System.out.println("Test 4: mix method calls");
-        Dequev3<Integer> deck = new Dequev3<>();
+        Deque<Integer> deck = new Deque<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0)
                 deck.addFirst(i);
