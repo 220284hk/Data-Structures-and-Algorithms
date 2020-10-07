@@ -2,7 +2,7 @@ package myImplementationsW2;
 
 public class MyQueueLinkedOne {
     private Node head = null;
-    private int size;
+    private int size = 1;
 
     private static class Node {
         private String item;
@@ -52,6 +52,7 @@ public class MyQueueLinkedOne {
             pointer = pointer.next;
         }
         sb.append("null");
+        sb.append("            \tThe number of elements in the queue are: " + numberOfElements());
         return sb.toString();
     }
 }
