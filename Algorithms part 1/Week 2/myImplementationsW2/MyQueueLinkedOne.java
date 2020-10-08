@@ -52,7 +52,6 @@ public class MyQueueLinkedOne {
             pointer = pointer.next;
         }
         sb.append("null");
-        sb.append("            \tThe number of elements in the queue are: " + numberOfElements());
         return sb.toString();
     }
 }

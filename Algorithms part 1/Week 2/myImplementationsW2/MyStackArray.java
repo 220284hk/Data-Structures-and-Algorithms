@@ -3,7 +3,6 @@ package myImplementationsW2;
 import java.util.Arrays;
 
 public class MyStackArray {
-    // prevent thrashing
     private int pointer = 0;
     private int size = 1;
     private String[] stack;
@@ -40,9 +39,6 @@ public class MyStackArray {
     private void resize() {
         String[] tempStack = new String[size * 2];
         System.arraycopy(stack, 0, tempStack, 0, stack.length);
-//        for (int i = 0; i < stack.length; i++) {
-//            tempStack[i] = stack[i];
-//        }
         stack = tempStack;
         tempStack = null;
         size *= 2;
@@ -54,9 +50,15 @@ public class MyStackArray {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (String x : stack) {
-            sb.append(x).append(" ");
+//        for (String x : stack) {
+//            sb.append(x).append("\n");
+//        }
+        int pv = pointer;
+        while (pv > 0) {
+            sb.append(" ___________\n");
+            sb.append("|_____").append(stack[--pv]).append("_____|\n");
         }
         return sb.toString();
     }
+
 }

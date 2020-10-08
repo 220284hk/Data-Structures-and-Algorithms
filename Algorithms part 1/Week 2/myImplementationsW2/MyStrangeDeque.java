@@ -2,13 +2,13 @@ package myImplementationsW2;
 
 import java.util.Iterator;
 
-public class myDeque<Item> implements Iterable<Item> {
+public class MyStrangeDeque<Item> implements Iterable<Item> {
     private Item[] deck;
     private int fFront = 0, fBack = 0, bFront = 0, bBack = 0;
 
     // construct an empty deque
     @SuppressWarnings({"MoveFieldAssignmentToInitializer", "unchecked"})
-    public myDeque() {
+    public MyStrangeDeque() {
         deck = (Item[]) new Object[1];
     }
 
@@ -74,9 +74,7 @@ public class myDeque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        myDeque<String> deck = new myDeque<>();
-        deck.addFirst("hello");
-        System.out.println(deck);
+
     }
 
 }

@@ -3,7 +3,9 @@ package myImplementationsW2;
 public class main {
 
     public static void main(String[] args) {
-        queueLinkedTest();
+//        queueLinkedTest();
+        test1();
+//        test2();
     }
 
     private static void queueLinkedTest() {
@@ -67,7 +69,7 @@ public class main {
         System.out.println(myStackArray);
     }
 
-    public void test2() {
+    public static void test2() {
         MyStackList myStackList = new MyStackList();
         myStackList.pop();
         myStackList.push("hello");
