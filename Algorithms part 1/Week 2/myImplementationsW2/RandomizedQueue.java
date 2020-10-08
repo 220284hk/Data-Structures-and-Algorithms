@@ -1,3 +1,5 @@
+package myImplementationsW2;
+
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Arrays;
@@ -40,8 +42,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int currentSize = capacity;
         if (count == capacity) {
             capacity *= 2;
-        }
-        else {
+        } else {
             capacity /= 2;
         }
 

@@ -1,3 +1,5 @@
+package myImplementationsW2;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -34,8 +36,7 @@ public class Deque<Item> implements Iterable<Item> {
             deque[head] = item;
             itemCount++;
             return;
-        }
-        else if (isFull()) {
+        } else if (isFull()) {
             resize();
         }
         adjust(HEAD);
@@ -73,8 +74,7 @@ public class Deque<Item> implements Iterable<Item> {
             deque[tail] = item;
             itemCount++;
             return;
-        }
-        else if (isFull()) {
+        } else if (isFull()) {
             resize();
         }
         adjust(TAIL);
@@ -112,8 +112,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (p == HEAD) { // HEAD
             if (head == 0) head = capacity;
             else if (head == capacity) head = 0;
-        }
-        else if (p == TAIL) { // TAIL
+        } else if (p == TAIL) { // TAIL
             if (tail == -1) tail = capacity - 1;
             else if (tail == capacity - 1) tail = -1;
         }

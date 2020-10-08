@@ -1,9 +1,10 @@
 package queues;
 
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private int capacity = 1, count = 0;
@@ -28,10 +29,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException();
         if (count == capacity) resize();
-        Random random = new Random();
-        int num = random.nextInt(capacity);
+        StdRandom.uniform(capacity);
+        int num = StdRandom.uniform(capacity);
         while (queue[num] != null) {
-            num = random.nextInt(capacity);
+            num = StdRandom.uniform(capacity);
         }
         queue[num] = item;
         count++;
@@ -46,7 +47,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         Item[] tempQueue = (Item[]) new Object[capacity];
-        for (int i = 0, j = 0; i < currentSize; i++) {
+        int j = 0;
+        for (int i = 0; i < currentSize; i++) {
             if (queue[i] != null) tempQueue[j++] = queue[i];
         }
         queue = tempQueue;
@@ -55,10 +57,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // remove and return a random item
     public Item dequeue() {
         if (size() == 0) throw new NoSuchElementException();
-        Random random = new Random();
-        int num = random.nextInt(capacity);
+        int num = StdRandom.uniform(capacity);
         while (queue[num] == null) {
-            num = random.nextInt(capacity);
+            num = StdRandom.uniform(capacity);
         }
         Item val = queue[num];
         queue[num] = null;
@@ -74,29 +75,33 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // return a random item (but do not remove it)
     public Item sample() {
         if (size() == 0) throw new NoSuchElementException();
-        Random random = new Random();
-        int num = random.nextInt(capacity);
-        while (queue[num] != null) {
-            num = random.nextInt(capacity);
+        int num = StdRandom.uniform(capacity);
+        while (queue[num] == null) {
+            num = StdRandom.uniform(capacity);
         }
         return queue[num];
     }
 
     // return an independent iterator over items in random order
     public Iterator<Item> iterator() {
+
         return new Iterator<Item>() {
             private boolean[] checked = new boolean[capacity];
             private int mCount = count;
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
 
             public boolean hasNext() {
                 return mCount > 0;
             }
 
             public Item next() {
-                Random random = new Random();
-                int x = random.nextInt(capacity);
+                if (!hasNext()) throw new NoSuchElementException();
+                int x = StdRandom.uniform(capacity);
                 while (checked[x] || queue[x] == null) {
-                    x = random.nextInt(capacity);
+                    x = StdRandom.uniform(capacity);
                     if (queue[x] == null) checked[x] = true;
                 }
                 checked[x] = true;
@@ -108,25 +113,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
-        System.out.println(rq);
-        for (int i = 0; i < 100; i++) {
-            rq.enqueue(i);
-        }
-        System.out.println(rq);
-        Iterator<Integer> it1 = rq.iterator();
-        Iterator<Integer> it2 = rq.iterator();
-
-        StringBuilder sb1 = new StringBuilder();
-        sb1.append("Iterator 1: ");
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append("Iterator 2: ");
-        for (int i = 0; i < 10; i++) {
-            sb1.append(", " + it1.next());
-            sb2.append(", " + it2.next());
-        }
-        System.out.println(sb1.toString());
-        System.out.println(sb2.toString());
+        //    Intentionally empty
     }
 
 }
