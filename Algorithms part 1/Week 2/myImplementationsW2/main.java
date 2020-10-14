@@ -22,12 +22,12 @@ public class main {
         System.out.println(Arrays.toString(myShuffle(myArray)));
     }
 
-    public static int[] randomUniqueIntArrayGenerator(int n) {
+    public static Integer[] randomUniqueIntArrayGenerator(Integer n) {
         Random random = new Random();
-        int[] randomArray = new int[n];
+        Integer[] randomArray = new Integer[n];
         HashSet<Integer> set = new HashSet<Integer>();
         for (int i = 0; i < n; i++) {
-            int temp = random.nextInt(50);
+            Integer temp = random.nextInt(50);
             while (set.contains(temp)) {
                 temp = random.nextInt(50);
             }

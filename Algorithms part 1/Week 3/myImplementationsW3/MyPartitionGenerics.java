@@ -1,17 +1,17 @@
 package myImplementationsW3;
 
-public class MyPartition {
-    public static int partition(int[] array, int low, int high) {
+public class MyPartitionGenerics {
+    public static int partition(Comparable[] array, int low, int high) {
         int partitionIndex = low++;
-        int partitionValue = array[low];
+        Comparable partitionValue = array[partitionIndex];
 
         while (low != high + 1) { // cross paths
-            while (array[low] < partitionValue) {
+            while (array[low].compareTo(partitionValue) < 0) {
                 low++;
                 if (low == high + 1) break;
             }
             if (low == high + 1) break;
-            if (array[high] <= partitionValue) {
+            if (array[high].compareTo(partitionValue) < 0) {
                 swap(array, low, high);
             }
             high--;
@@ -22,8 +22,8 @@ public class MyPartition {
         return high;
     }
 
-    private static void swap(int[] array, int i, int j) {
-        int temp = array[i];
+    private static void swap(Comparable[] array, int i, int j) {
+        Comparable temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
