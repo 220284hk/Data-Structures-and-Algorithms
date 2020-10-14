@@ -3,7 +3,7 @@ package myImplementationsW3;
 public class MyPartition {
     public static int partition(int[] array, int low, int high) {
         int partitionIndex = low++;
-        int partitionValue = array[partitionIndex];
+        int partitionValue = array[low];
 
         while (low != high + 1) { // cross paths
             while (array[low] < partitionValue) {
