@@ -4,6 +4,7 @@ public class MyPartition {
     public static int partition(int[] array, int low, int high) {
         int partitionIndex = low++;
         int partitionValue = array[low];
+        int nothingImportant = 0;
 
         while (low != high + 1) { // cross paths
             while (array[low] < partitionValue) {
