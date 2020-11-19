@@ -8,6 +8,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -25,20 +26,16 @@ public class KdTree {
     }
 
     public void insert(Point2D p) {
-        StdDraw.setPenRadius(0.01);
-        p.draw();
-        StdDraw.setPenRadius(0.001);
+        // StdDraw.setPenRadius(0.01);
+        // p.draw();
+        // StdDraw.setPenRadius(0.001);
         if (root == null) {
-            StdDraw.setPenRadius(0.015);
-            p.draw();
-            StdDraw.setPenRadius(0.001);
+            // StdDraw.setPenRadius(0.015);
+            // p.draw();
+            // StdDraw.setPenRadius(0.001);
             root = new Node();
             root.p = p;
             root.rect = new RectHV(0, 0, 1, 1);
-            RectHV temp = new RectHV(p.x(), 0, p.x(), 1);
-            StdDraw.setPenColor(StdDraw.RED);
-            temp.draw();
-            StdDraw.setPenColor(StdDraw.BLACK);
             size = 1;
         }
         else {
@@ -102,30 +99,48 @@ public class KdTree {
     }
 
     public void draw() {
-        draw(root);
+        StdDraw.setPenRadius(0.001);
+        draw(root, Boolean.FALSE);
     }
 
-    private void draw(Node x) {
-        StdDraw.setPenRadius(0.01);
-        if (x == null) return;
-        x.p.draw();
-        draw(x.lb);
-        draw(x.rt);
-    }
-
-    private void draw(RectHV rect) {
-        if (horizontal) {
-            StdDraw.setPenColor(StdDraw.BLUE);
-            rect.draw();
-            StdDraw.setPenColor(StdDraw.BLACK);
+    private void draw(Node parent, Boolean h) {
+        if (parent == null) return;
+        StdDraw.setPenColor(Color.BLACK);
+        StdDraw.setPenRadius(0.008);
+        parent.p.draw();
+        StdDraw.setPenRadius(0.001);
+        // StdDraw.pause(3000);
+        if (h) {
+            StdDraw.setPenColor(Color.BLUE);
+            RectHV t = new RectHV(parent.rect.xmin(), parent.p.y(), parent.rect.xmax(),
+                    parent.p.y());
+            t.draw();
+            draw(parent.lb, Boolean.FALSE);
+            draw(parent.rt, Boolean.FALSE);
         }
         else {
-            StdDraw.setPenColor(StdDraw.RED);
-            rect.draw();
-            StdDraw.setPenColor(StdDraw.BLACK);
+            StdDraw.setPenColor(Color.RED);
+            RectHV t = new RectHV(parent.p.x(), parent.rect.ymin(), parent.p.x(),
+                    parent.rect.ymax());
+            t.draw();
+            draw(parent.lb, Boolean.TRUE);
+            draw(parent.rt, Boolean.TRUE);
         }
-
     }
+
+    // private void draw(RectHV rect) {
+    //     if (horizontal) {
+    //         StdDraw.setPenColor(StdDraw.BLUE);
+    //         rect.draw();
+    //         StdDraw.setPenColor(StdDraw.BLACK);
+    //     }
+    //     else {
+    //         StdDraw.setPenColor(StdDraw.RED);
+    //         rect.draw();
+    //         StdDraw.setPenColor(StdDraw.BLACK);
+    //     }
+    //
+    // }
 
     private void ins(Point2D p, Node parent) {
         if (parent.p.equals(p)) {
@@ -140,8 +155,8 @@ public class KdTree {
                     parent.lb.rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(),
                             parent.p.y(), parent.rect.ymax());
                     size += 1;
-                    draw(new RectHV(parent.rect.xmin(), p.y(), parent.p.x(),
-                            p.y())); // this is for debugging
+                    // draw(new RectHV(parent.rect.xmin(), p.y(), parent.p.x(),
+                    //                 p.y())); // this is for debugging
                 }
                 else {
                     horizontal = false;
@@ -154,7 +169,7 @@ public class KdTree {
                     parent.rt.p = p;
                     parent.rt.rect = new RectHV(parent.p.x(), parent.rect.ymin(),
                             parent.rect.xmax(), parent.rect.ymax());
-                    draw(new RectHV(parent.p.x(), p.y(), parent.rect.xmax(), p.y()));
+                    // draw(new RectHV(parent.p.x(), p.y(), parent.rect.xmax(), p.y()));
                     size += 1;
                 }
                 else {
@@ -170,8 +185,8 @@ public class KdTree {
                     parent.lb.p = p;
                     parent.lb.rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(),
                             parent.rect.xmax(), parent.p.y());
-                    draw(new RectHV(p.x(), parent.rect.ymin(), p.x(),
-                            parent.p.y())); // this is for debugging
+                    // draw(new RectHV(p.x(), parent.rect.ymin(), p.x(),
+                    //                 parent.p.y())); // this is for debugging
                     size += 1;
                 }
                 else {
@@ -185,7 +200,7 @@ public class KdTree {
                     parent.rt.p = p;
                     parent.rt.rect = new RectHV(parent.rect.xmin(), parent.p.y(),
                             parent.rect.xmax(), parent.rect.ymax());
-                    draw(new RectHV(p.x(), parent.p.y(), p.x(), parent.rect.ymax()));
+                    // draw(new RectHV(p.x(), parent.p.y(), p.x(), parent.rect.ymax()));
                     size += 1;
                 }
                 else {
@@ -220,6 +235,7 @@ public class KdTree {
         t.insert(new Point2D(0.65, 0.65));
         assert (t.size() == 11);
         System.out.println("hi");
+        t.draw();
 
         Iterator<Point2D> it = t.range(new RectHV(0.55, 0.55, 0.55, 0.55)).iterator();
 
