@@ -5,18 +5,17 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.Color;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class KdTree {
     private Node root;
     private boolean horizontal;
-    private int size;
+    private int size = 0;
+    private Point2D closestPoint;
 
     private static class Node {
         private Point2D p;      // the point
@@ -26,6 +25,7 @@ public class KdTree {
     }
 
     public void insert(Point2D p) {
+        if (p == null) throw new IllegalArgumentException();
         if (root == null) {
             root = new Node();
             root.p = p;
@@ -38,102 +38,15 @@ public class KdTree {
         }
     }
 
-    public boolean isEmpty() {
-        return root == null;
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public boolean contains(Point2D p) {
-        if (size == 0) return false;
-        horizontal = true;
-        return contains(p, root);
-    }
-
-    private boolean contains(Point2D p, Node parent) {
-        if (parent == null) return false;
-        if (parent.p.equals(p)) return true;
-        if (horizontal) {
-            if (p.x() <= parent.p.x()) return contains(p, parent.lb);
-            horizontal = false;
-            return contains(p, parent.rt);
-        }
-        else {
-            if (p.y() <= parent.p.y()) return contains(p, parent.lb);
-            horizontal = true;
-            return contains(p, parent.rt);
-        }
-    }
-
-    public Iterable<Point2D> range(RectHV rect) {
-        if (rect == null) throw new IllegalArgumentException();
-        Set<Point2D> x = new HashSet<>();
-
-        if (rect.contains(root.p)) x.add(root.p);
-        traverseTree(x, root, rect);
-
-        return x;
-    }
-
-    private void traverseTree(Set<Point2D> x, Node parent, RectHV rect) {
-        if (parent.lb != null && parent.lb.rect.intersects(rect)) {
-            if (rect.contains(parent.lb.p)) {
-                x.add(parent.lb.p);
-            }
-            traverseTree(x, parent.lb, rect);
-        }
-        if (parent.rt != null && parent.rt.rect.intersects(rect)) {
-            if (rect.contains(parent.rt.p)) {
-                x.add(parent.rt.p);
-            }
-            traverseTree(x, parent.rt, rect);
-        }
-    }
-
-    public void draw() {
-        StdDraw.setPenRadius(0.001);
-        draw(root, Boolean.FALSE);
-    }
-
-    private void draw(Node parent, Boolean h) {
-        if (parent == null) return;
-        StdDraw.setPenColor(Color.BLACK);
-        StdDraw.setPenRadius(0.008);
-        parent.p.draw();
-        StdDraw.setPenRadius(0.001);
-        // StdDraw.pause(3000);
-        if (h) {
-            StdDraw.setPenColor(Color.BLUE);
-            RectHV t = new RectHV(parent.rect.xmin(), parent.p.y(), parent.rect.xmax(),
-                    parent.p.y());
-            t.draw();
-            draw(parent.lb, Boolean.FALSE);
-            draw(parent.rt, Boolean.FALSE);
-        }
-        else {
-            StdDraw.setPenColor(Color.RED);
-            RectHV t = new RectHV(parent.p.x(), parent.rect.ymin(), parent.p.x(),
-                    parent.rect.ymax());
-            t.draw();
-            draw(parent.lb, Boolean.TRUE);
-            draw(parent.rt, Boolean.TRUE);
-        }
-    }
-
     private void ins(Point2D p, Node parent) {
-        if (parent.p.equals(p)) {
-            System.out.println("Already contains the point " + p);
-            return;
-        }
+        if (parent.p.equals(p)) { return; }
         if (horizontal) {
             if (p.x() <= parent.p.x()) {
                 if (parent.lb == null) {
                     parent.lb = new Node();
                     parent.lb.p = p;
                     parent.lb.rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(),
-                            parent.p.y(), parent.rect.ymax());
+                            parent.p.x(), parent.rect.ymax());
                     size += 1;
                 }
                 else {
@@ -156,12 +69,13 @@ public class KdTree {
             }
         }
         else {
-            if (p.y() <= parent.p.y()) {    // Not 100% sure about this equal
+            if (p.y() <= parent.p.y()) {
                 if (parent.lb == null) {
                     parent.lb = new Node();
                     parent.lb.p = p;
                     parent.lb.rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(),
                             parent.rect.xmax(), parent.p.y());
+
                     size += 1;
                 }
                 else {
@@ -185,35 +99,139 @@ public class KdTree {
         }
     }
 
-    public static void main(String[] args) {
-        KdTree t = new KdTree();
-        assert (t.size == 0);
-        assert (!t.contains(new Point2D(0.2, 0.2)));
-        t.insert(new Point2D(0.2, 0.2));
-        assert (!t.contains(new Point2D(0.6, 0.6)));
-        t.insert(new Point2D(0.2, 0.2));
-        t.insert(new Point2D(0.4, 0.4));
-        assert (t.size() == 2);
-        t.insert(new Point2D(0.6, 0.6));
-        assert (t.contains(new Point2D(0.6, 0.6)));
-        t.insert(new Point2D(0.8, 0.8));
-        t.insert(new Point2D(0.1, 0.8));
-        t.insert(new Point2D(0.3, 0.7));
-        t.insert(new Point2D(0.55, 0.35));
-        t.insert(new Point2D(0.7, 0.16));
-        t.insert(new Point2D(0.5, 0.5));
-        t.insert(new Point2D(0.55, 0.55));
-        t.insert(new Point2D(0.6, 0.6));
-        t.insert(new Point2D(0.65, 0.65));
-        assert (t.size() == 11);
-        System.out.println("hi");
-        t.draw();
+    public boolean isEmpty() {
+        return root == null;
+    }
 
-        Iterator<Point2D> it = t.range(new RectHV(0.55, 0.55, 0.55, 0.55)).iterator();
+    public int size() {
+        return size;
+    }
 
-        while (it.hasNext()) {
-            System.out.println(it.next());
+    public boolean contains(Point2D p) {
+        if (p == null) throw new IllegalArgumentException();
+        if (size == 0) return false;
+        horizontal = true;
+        return contains(p, root);
+    }
+
+    private boolean contains(Point2D p, Node parent) {
+        if (parent == null) return false;
+        if (parent.p.equals(p)) return true;
+        if (horizontal) {
+            horizontal = false;
+            if (p.x() <= parent.p.x()) return contains(p, parent.lb);
+            return contains(p, parent.rt);
+        }
+        else {
+            horizontal = true;
+            if (p.y() <= parent.p.y()) return contains(p, parent.lb);
+            return contains(p, parent.rt);
+        }
+    }
+
+    public Iterable<Point2D> range(RectHV rect) {
+        if (rect == null) throw new IllegalArgumentException();
+        Queue<Point2D> x = new Queue<>();
+        if (size == 0) return x;
+
+        if (rect.contains(root.p)) x.enqueue(root.p);
+        traverseTree(x, root, rect);
+
+        return x;
+    }
+
+    private void traverseTree(Queue<Point2D> x, Node parent, RectHV rect) {
+        if (parent.lb != null && parent.lb.rect.intersects(rect)) {
+            if (rect.contains(parent.lb.p)) {
+                x.enqueue(parent.lb.p);
+            }
+            traverseTree(x, parent.lb, rect);
+        }
+        if (parent.rt != null && parent.rt.rect.intersects(rect)) {
+            if (rect.contains(parent.rt.p)) {
+                x.enqueue(parent.rt.p);
+            }
+            traverseTree(x, parent.rt, rect);
+        }
+    }
+
+    public void draw() {
+        StdDraw.setPenRadius(0.001);
+        draw(root, Boolean.FALSE);
+    }
+
+    private void draw(Node node, Boolean h) {
+        if (node == null) return;
+        // StdDraw.setPenColor(Color.BLACK);
+        // StdDraw.setPenRadius(0.008);
+        // node.p.draw();
+        // StdDraw.setPenRadius(0.005);
+        // StdDraw.pause(5000);
+        if (h) {
+            StdDraw.setPenColor(Color.BLUE);
+            RectHV t = new RectHV(node.rect.xmin(), node.p.y(), node.rect.xmax(), node.p.y());
+            t.draw();
+            draw(node.lb, Boolean.FALSE);
+            draw(node.rt, Boolean.FALSE);
+        }
+        else {
+            StdDraw.setPenColor(Color.RED);
+            RectHV t = new RectHV(node.p.x(), node.rect.ymin(), node.p.x(), node.rect.ymax());
+            t.draw();
+            draw(node.lb, Boolean.TRUE);
+            draw(node.rt, Boolean.TRUE);
+        }
+    }
+
+    public Point2D nearest(Point2D p) {
+        if (p == null) throw new IllegalArgumentException();
+        if (size() == 0) return null;
+        closestPoint = root.p;
+
+        closer(root, p);
+
+        return closestPoint;
+    }
+
+    private void closer(Node parent, Point2D p) {
+        if (parent == null) return;
+        // System.out.println("I have been queried: " + parent.p);
+        if (parent.p.distanceSquaredTo(p) < closestPoint.distanceSquaredTo(p)) {
+            closestPoint = parent.p;
         }
 
+        if (parent.lb != null && parent.rt != null) {
+            double diff = parent.lb.rect.distanceSquaredTo(p) - parent.rt.rect.distanceSquaredTo(p);
+
+            if (diff < 0) {
+                closer(parent.lb, p);
+
+                if (parent.rt.rect.distanceSquaredTo(p) < closestPoint.distanceSquaredTo(p)) {
+                    closer(parent.rt, p);
+                }
+            }
+            else {
+                closer(parent.rt, p);
+
+                if (parent.lb.rect.distanceSquaredTo(p) < closestPoint.distanceSquaredTo(p)) {
+                    closer(parent.lb, p);
+                }
+            }
+        }
+        else if (parent.lb == null) {
+            if (parent.rt != null && parent.rt.rect.distanceSquaredTo(p) < closestPoint.distanceSquaredTo(p)) {
+                closer(parent.rt, p);
+            }
+        }
+        else {
+            if (parent.lb.rect.distanceSquaredTo(p) < closestPoint.distanceSquaredTo(p)) {
+                closer(parent.lb, p);
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        // Intentionally blank
     }
 }
